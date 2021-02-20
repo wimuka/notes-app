@@ -1,11 +1,10 @@
 import React from 'react';
-
 import interact from 'interactjs';
 
+import NotesList from '../notes/NotesList';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { styled } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,18 +30,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
-
-const NotesPaper = styled('div')({
-  backgroundColor: '#ffa000',
-  height: '15%',
-  width: '15%',
-  overflow: 'hidden',
-  userSelect: 'none',
-  touchAction: 'none',
-  padding: '0.5rem',
-  marginLeft: '1.4rem',
-  marginTop: '1.7rem',
-});
 
 const dragMoveListener = event => {
   const target = event.target;
@@ -89,38 +76,7 @@ const NotesDash = () => {
     <div className={root}>
       <Grid item md={6} sm={8} xs={11}>
         <Grid className={gridHeight}>
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
-
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
-
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
-          <NotesPaper className='draggable'>
-            Cook dinner and do web devCook Cook dinner and do web devCook Cook
-            dinner and do web devCook Cook dinner and do web devCook Cook dinner
-            and do web devCook
-          </NotesPaper>
+          <NotesList />
         </Grid>
       </Grid>
     </div>

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
+import { styled } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
-import { styled } from '@material-ui/core/styles';
+
+import AddNoteModal from '../notes/AddNoteModal';
 
 const useStyles = makeStyles(theme => ({
   root: { display: 'flex', justifyContent: 'center', marginTop: '1rem' },
@@ -71,16 +72,7 @@ const WorkButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const AddnoteButton = styled(Button)({
-  backgroundColor: '#ff6e40',
-  width: '8rem',
-  color: '#fff',
-  '&:hover': {
-    backgroundColor: '#f4511e',
-  },
-});
-
-const Categories = () => {
+const Categories = ({ text }) => {
   const classes = useStyles();
   const { root, addNoteBtn, btnsAlignment } = classes;
 
@@ -98,13 +90,7 @@ const Categories = () => {
         <Hidden only='xs'>
           <Grid className={addNoteBtn}>
             <Grid>
-              <AddnoteButton
-                variant='contained'
-                color='primary'
-                startIcon={<AddIcon fontSize='small' />}
-              >
-                ADD NOTE
-              </AddnoteButton>
+              <AddNoteModal />
             </Grid>
           </Grid>
         </Hidden>

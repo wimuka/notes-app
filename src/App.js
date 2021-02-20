@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchBar from './components/SearchBar';
-import Categories from './components/Categories';
-import NotesDash from './components/NotesDash';
+import SearchBar from './components/layout/SearchBar';
+import Categories from './components/layout/Categories';
+import NotesDash from './components/layout/NotesDash';
 
 import './App.css';
 
