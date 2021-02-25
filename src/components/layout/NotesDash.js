@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import interact from 'interactjs';
+import { useDispatch } from 'react-redux';
 
-import NotesList from '../notes/NotesList';
+import Notes from '../notes/Notes';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -14,9 +15,12 @@ const useStyles = makeStyles(theme => ({
   },
   gridHeight: {
     height: '45rem',
+    borderRadius: '0.3rem',
     backgroundColor: '#ffff',
     display: 'flex',
     flexWrap: 'wrap',
+    overflowY: 'auto',
+
     alignContent: 'flex-start',
     [theme.breakpoints.down('lg')]: {
       height: '45rem',
@@ -72,12 +76,11 @@ interact('.draggable').draggable({
 const NotesDash = () => {
   const classes = useStyles();
   const { root, gridHeight } = classes;
+
   return (
     <div className={root}>
-      <Grid item md={6} sm={8} xs={11}>
-        <Grid className={gridHeight}>
-          <NotesList />
-        </Grid>
+      <Grid item md={6} sm={8} xs={11} className={gridHeight}>
+        <Notes />
       </Grid>
     </div>
   );

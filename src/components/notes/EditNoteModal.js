@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import Modal from '@material-ui/core/Modal';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+
+import { addNote, handleModalClose } from '../../actions/notesActions';
+import AddButton from '../layout/AddButton';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -12,13 +14,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import Modal from '@material-ui/core/Modal';
 
-import AddButton from '../layout/AddButton';
-import { addNote, handleModalClose } from '../../actions/notesActions';
-
-const AddNoteModal = () => {
-  const addModalStatus = useSelector(state => state.notes.setAddModal);
+const EditNoteModal = () => {
   const dispatch = useDispatch();
+  const addModalStatus = useSelector(state => state.notes.setAddModal);
 
   const [title, setTitle] = useState('');
   const [notesBody, setNotesBody] = useState('');
@@ -40,11 +40,6 @@ const AddNoteModal = () => {
       dispatch(addNote(newNote));
       dispatch(handleModalClose());
     }
-
-    //Clear Fields
-    setTitle('');
-    setNotesBody('');
-    setCategory('');
   };
 
   const useStyles = makeStyles(theme => ({
@@ -94,7 +89,6 @@ const AddNoteModal = () => {
       marginTop: '0.5rem',
     },
   }));
-
   const classes = useStyles();
 
   const body = (
@@ -158,7 +152,6 @@ const AddNoteModal = () => {
 
   return (
     <div>
-      <AddButton />
       <Modal
         open={addModalStatus}
         onClose={() => handleModalClose()}
@@ -171,5 +164,4 @@ const AddNoteModal = () => {
     </div>
   );
 };
-
-export default AddNoteModal;
+export default EditNoteModal;

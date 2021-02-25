@@ -87,13 +87,13 @@ const Categories = ({ text }) => {
             <PersonalButton>PERSONAL</PersonalButton>
           </Grid>
         </Grid>
-        <Hidden only='xs'>
-          <Grid className={addNoteBtn}>
-            <Grid>
-              <AddNoteModal />
-            </Grid>
+        {/* <Hidden only='xs'> */}
+        <Grid className={addNoteBtn}>
+          <Grid>
+            <AddNoteModal />
           </Grid>
-        </Hidden>
+        </Grid>
+        {/* </Hidden> */}
       </Grid>
     </div>
   );

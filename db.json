@@ -1,0 +1,23 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "title": "Movies To Watch",
+      "notesBody": "Ravenant, Once Upon A Time In Hollywood",
+      "date": "December 26, 2020"
+    },
+    {
+      "id": 2,
+      "title": "Books to read",
+      "notesBody": "Harry Potter, Fantasy, Cook Book",
+      "date": "February 12, 2021"
+    },
+    {
+      "title": "Chores to do",
+      "notesBody": "Vacuum\nDo dishes\nClean Miso's litter",
+      "category": "home",
+      "date": "2021-02-25T00:20:51.244Z",
+      "id": 3
+    }
+  ]
+}

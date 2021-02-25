@@ -20,6 +20,7 @@ const AddButton = () => {
   const addModalStatus = useSelector(state => state.notes.setAddModal);
 
   const onBtnClick = () => {
+    console.log(addModalStatus);
     dispatch({ type: 'SET_ADD_MODAL', payload: !addModalStatus });
   };
 
