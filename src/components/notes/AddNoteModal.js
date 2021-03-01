@@ -14,7 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 
 import AddButton from '../layout/AddButton';
-import { addNote, handleModalClose } from '../../actions/notesActions';
+import { addNote, handleAddModalClose } from '../../actions/notesActions';
 
 const AddNoteModal = () => {
   const addModalStatus = useSelector(state => state.notes.setAddModal);
@@ -25,7 +25,7 @@ const AddNoteModal = () => {
   const [category, setCategory] = useState('');
 
   const onSubmit = () => {
-    if (title === '' && notesBody === '' && category === '') {
+    if (title === '' || notesBody === '' || category === '') {
       console.log('type in note');
     } else if ((title !== '' || notesBody !== '') && category === '') {
       console.log('type in note 2');
@@ -38,13 +38,12 @@ const AddNoteModal = () => {
       };
       console.log('Add notes inside AddNoteModal', newNote);
       dispatch(addNote(newNote));
-      dispatch(handleModalClose());
+      dispatch(handleAddModalClose());
+      //Clear Fields
+      setTitle('');
+      setNotesBody('');
+      setCategory('');
     }
-
-    //Clear Fields
-    setTitle('');
-    setNotesBody('');
-    setCategory('');
   };
 
   const useStyles = makeStyles(theme => ({
@@ -147,7 +146,7 @@ const AddNoteModal = () => {
             href='#text-buttons'
             color='secondary'
             className={classes.AddButton}
-            onClick={() => dispatch(handleModalClose())}
+            onClick={() => dispatch(handleAddModalClose())}
           >
             CANCEL
           </Button>
@@ -161,7 +160,7 @@ const AddNoteModal = () => {
       <AddButton />
       <Modal
         open={addModalStatus}
-        onClose={() => handleModalClose()}
+        onClose={() => dispatch(handleAddModalClose())}
         aria-describedby='modal-title'
         aria-labelledby='modal-body'
         aria-labelledby='modal-category'

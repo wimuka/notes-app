@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import interact from 'interactjs';
 import { useDispatch } from 'react-redux';
+import EditNoteModal from '../notes/EditNoteModal';
 
 import Notes from '../notes/Notes';
 
@@ -81,6 +82,7 @@ const NotesDash = () => {
     <div className={root}>
       <Grid item md={6} sm={8} xs={11} className={gridHeight}>
         <Notes />
+        <EditNoteModal />
       </Grid>
     </div>
   );

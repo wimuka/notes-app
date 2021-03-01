@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import { addNote, handleModalClose } from '../../actions/notesActions';
-import AddButton from '../layout/AddButton';
+import { editNote, handleEditModalClose } from '../../actions/notesActions';
+import EditButton from '../layout/EditButton';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -16,29 +16,44 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Modal from '@material-ui/core/Modal';
 
-const EditNoteModal = () => {
+const EditNoteModal = ({ note }) => {
   const dispatch = useDispatch();
-  const addModalStatus = useSelector(state => state.notes.setAddModal);
+
+  const editModalStatus = useSelector(state => state.notes.setEditModal);
+  const currentNote = useSelector(state => state.notes.currentNote);
+  const currentNoteId = useSelector(state => state.notes.currentNote.id);
 
   const [title, setTitle] = useState('');
   const [notesBody, setNotesBody] = useState('');
   const [category, setCategory] = useState('');
 
+  useEffect(() => {
+    if (currentNote) {
+      setTitle(currentNote.title);
+      setNotesBody(currentNote.notesBody);
+      setCategory(currentNote.category);
+    }
+  }, [currentNote]);
+
   const onSubmit = () => {
-    if (title === '' && notesBody === '' && category === '') {
+    if ((title === '' || notesBody === '') && category === '') {
       console.log('type in note');
-    } else if ((title !== '' || notesBody !== '') && category === '') {
-      console.log('type in note 2');
     } else {
-      const newNote = {
+      const updateNote = {
+        id: currentNote.id,
         title,
         notesBody,
         category,
-        date: new Date(),
+        date: `Edited: ${new Date()}`,
       };
-      console.log('Add notes inside AddNoteModal', newNote);
-      dispatch(addNote(newNote));
-      dispatch(handleModalClose());
+      console.log('Update note inside AddNoteModal', updateNote);
+
+      dispatch(editNote(updateNote, currentNoteId));
+      dispatch(handleEditModalClose());
+
+      setTitle('');
+      setNotesBody('');
+      setCategory('');
     }
   };
 
@@ -76,7 +91,7 @@ const EditNoteModal = () => {
       padding: '1rem',
     },
 
-    AddButton: {
+    SubmitButton: {
       marginTop: '1.5rem',
     },
 
@@ -101,6 +116,7 @@ const EditNoteModal = () => {
             type='text'
             name='message'
             onChange={e => setTitle(e.target.value)}
+            value={title}
           />
           <TextField
             multiline
@@ -109,6 +125,7 @@ const EditNoteModal = () => {
             type='text'
             InputProps={{ disableUnderline: true }}
             onChange={e => setNotesBody(e.target.value)}
+            value={notesBody}
           />
           <Grid>
             <InputLabel
@@ -122,6 +139,7 @@ const EditNoteModal = () => {
               className={classes.CatetogySelect}
               inputProps={{ id: 'category-select' }}
               onChange={e => setCategory(e.target.value)}
+              value={category}
             >
               <option aria-label='None' value='' />
               <option value={'home'}>Home</option>
@@ -132,16 +150,16 @@ const EditNoteModal = () => {
           <Button
             href='#text-buttons'
             color='primary'
-            className={classes.AddButton}
+            className={classes.SubmitButton}
             onClick={() => onSubmit()}
           >
-            ADD
+            EDIT
           </Button>
           <Button
             href='#text-buttons'
             color='secondary'
-            className={classes.AddButton}
-            onClick={() => dispatch(handleModalClose())}
+            className={classes.SubmitButton}
+            onClick={() => dispatch(handleEditModalClose())}
           >
             CANCEL
           </Button>
@@ -153,8 +171,8 @@ const EditNoteModal = () => {
   return (
     <div>
       <Modal
-        open={addModalStatus}
-        onClose={() => handleModalClose()}
+        open={editModalStatus}
+        onClose={() => handleEditModalClose()}
         aria-describedby='modal-title'
         aria-labelledby='modal-body'
         aria-labelledby='modal-category'

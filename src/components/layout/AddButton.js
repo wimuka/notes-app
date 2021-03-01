@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { setAddModal } from '../../actions/notesActions';
 
 import { styled } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -17,11 +18,9 @@ const AddNoteButton = styled(Button)({
 
 const AddButton = () => {
   const dispatch = useDispatch();
-  const addModalStatus = useSelector(state => state.notes.setAddModal);
 
   const onBtnClick = () => {
-    console.log(addModalStatus);
-    dispatch({ type: 'SET_ADD_MODAL', payload: !addModalStatus });
+    dispatch(setAddModal());
   };
 
   return (

@@ -7,24 +7,37 @@ import NoteItem from './NoteItem';
 
 const Notes = () => {
   const allNotes = useSelector(state => state.notes.allnotes);
+  const filteredCategory = useSelector(state => state.notes.filteredCategory);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getNotes());
-    console.log('works in NotesDash');
   }, []);
 
-  return allNotes.map(note => {
-    return (
-      <NoteItem
-        key={note.id}
-        noteBody={note.notesBody}
-        title={note.title}
-        id={note.id}
-        note={note}
-      />
-    );
-  });
+  return filteredCategory.length > 0
+    ? filteredCategory.map(note => {
+        return (
+          <NoteItem
+            key={note.id}
+            noteBody={note.notesBody}
+            title={note.title}
+            id={note.id}
+            note={note}
+          />
+        );
+      })
+    : allNotes.map(note => {
+        return (
+          <NoteItem
+            key={note.id}
+            noteBody={note.notesBody}
+            title={note.title}
+            id={note.id}
+            note={note}
+          />
+        );
+      });
 };
 
 export default Notes;

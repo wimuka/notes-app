@@ -1,12 +1,15 @@
 import React from 'react';
-
-import { setCurrentId, setCurrentNote } from '../../actions/notesActions';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import EditButton from '../layout/EditButton';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { setEditModal, setCurrentNote } from '../../actions/notesActions';
 
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 
 const Note = styled(Paper)({
   backgroundColor: '#ffa000',
@@ -31,21 +34,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const NoteItem = ({ noteBody, title, id, note }) => {
+const NoteItem = ({ noteBody, title, note }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  console.log(id);
 
+  const onBtnClick = async () => {
+    await (dispatch(setCurrentNote(note)), console.log(1));
+    await (dispatch(setEditModal()), console.log(2));
+  };
   return (
-    <Note
-      className='draggable'
-      onClick={() => {
-        dispatch(setCurrentId(id));
-        dispatch(setCurrentNote(note));
-      }}
-    >
-      <h4 className={classes.title}>{title}</h4>
-      <p className={classes.body}>{noteBody}</p>
+    <Note className='draggable'>
+      <Grid>
+        <h4 className={classes.title}>{title}</h4>
+        <p className={classes.body}>{noteBody}</p>
+      </Grid>
+      <Grid>
+        {/* <EditButton note={note} /> */}
+
+        <IconButton disableRipple color='primary' onClick={() => onBtnClick()}>
+          <EditIcon />
+        </IconButton>
+      </Grid>
     </Note>
   );
 };
