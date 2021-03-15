@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import Modal from '@material-ui/core/Modal';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import {
+  addNote,
+  handleAddModalClose,
+  newDate,
+} from '../../actions/notesActions';
+
+import AddButton from '../layout/AddButton';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -13,36 +19,41 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 
-import AddButton from '../layout/AddButton';
-import { addNote, handleAddModalClose } from '../../actions/notesActions';
-
 const AddNoteModal = () => {
-  const addModalStatus = useSelector(state => state.notes.setAddModal);
   const dispatch = useDispatch();
+  const addModalStatus = useSelector(state => state.notes.setAddModal);
 
   const [title, setTitle] = useState('');
   const [notesBody, setNotesBody] = useState('');
   const [category, setCategory] = useState('');
+  const [bodyError, setBodyError] = useState(false);
+  const [catError, setCatError] = useState(false);
 
   const onSubmit = () => {
-    if (title === '' || notesBody === '' || category === '') {
-      console.log('type in note');
-    } else if ((title !== '' || notesBody !== '') && category === '') {
-      console.log('type in note 2');
+    if (notesBody === '' && category === '') {
+      setBodyError(true);
+      setCatError(true);
+    } else if (category === '') {
+      setCatError(true);
+      setBodyError(false);
+    } else if (notesBody === '') {
+      setBodyError(true);
+      setCatError(false);
     } else {
       const newNote = {
         title,
         notesBody,
         category,
-        date: new Date(),
+        date: newDate(),
       };
-      console.log('Add notes inside AddNoteModal', newNote);
       dispatch(addNote(newNote));
       dispatch(handleAddModalClose());
       //Clear Fields
       setTitle('');
       setNotesBody('');
       setCategory('');
+      setBodyError(false);
+      setCatError(false);
     }
   };
 
@@ -55,12 +66,15 @@ const AddNoteModal = () => {
         marginTop: '10rem',
       },
       height: '23rem',
+      '& .MuiFormLabel-root ': {
+        marginLeft: theme.spacing(1),
+      },
     },
 
     ModalTextField: {
       backgroundColor: '#f5f5f5',
       width: '96%',
-      paddingLeft: '1rem',
+      paddingLeft: '0.5rem',
       marginTop: '0.5rem',
       borderRadius: '0.3rem',
       height: '10rem',
@@ -69,7 +83,9 @@ const AddNoteModal = () => {
 
     ModalInputBase: {
       backgroundColor: '#f5f5f5',
-      paddingLeft: '1rem',
+      '& .MuiInputBase-input': {
+        marginLeft: theme.spacing(1),
+      },
       width: '100%',
       marginTop: '0.5rem',
       borderRadius: '0.3rem',
@@ -86,11 +102,11 @@ const AddNoteModal = () => {
 
     CategoryLabel: {
       marginTop: '1rem',
-      paddingLeft: '1rem',
     },
     CatetogySelect: {
       width: '12rem',
       marginTop: '0.5rem',
+      paddingLeft: '0.3rem',
     },
   }));
 
@@ -106,17 +122,21 @@ const AddNoteModal = () => {
             type='text'
             name='message'
             onChange={e => setTitle(e.target.value)}
+            inputProps={{ maxLength: 18 }}
           />
           <TextField
+            error={bodyError ? true : false}
             multiline
             className={classes.ModalTextField}
-            placeholder='Type Note...'
-            type='text'
+            label='Type note...'
+            // type='text'
             InputProps={{ disableUnderline: true }}
             onChange={e => setNotesBody(e.target.value)}
+            type='checkbox'
           />
           <Grid>
             <InputLabel
+              error={catError ? true : false}
               className={classes.CategoryLabel}
               htmlFor='category-select'
             >
@@ -135,7 +155,6 @@ const AddNoteModal = () => {
             </Select>
           </Grid>
           <Button
-            href='#text-buttons'
             color='primary'
             className={classes.AddButton}
             onClick={() => onSubmit()}
@@ -146,7 +165,12 @@ const AddNoteModal = () => {
             href='#text-buttons'
             color='secondary'
             className={classes.AddButton}
-            onClick={() => dispatch(handleAddModalClose())}
+            onClick={() => {
+              dispatch(handleAddModalClose());
+              setBodyError(false);
+              setCatError(false);
+              setCategory('');
+            }}
           >
             CANCEL
           </Button>
@@ -162,8 +186,7 @@ const AddNoteModal = () => {
         open={addModalStatus}
         onClose={() => dispatch(handleAddModalClose())}
         aria-describedby='modal-title'
-        aria-labelledby='modal-body'
-        aria-labelledby='modal-category'
+        aria-labelledby={('modal-add-body', 'modal-add-category')}
       >
         {body}
       </Modal>

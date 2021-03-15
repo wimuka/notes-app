@@ -1,34 +1,40 @@
 import {
+  GET_NOTES,
   ADD_NOTE,
   EDIT_NOTE,
-  GET_NOTES,
+  DELETE_NOTE,
   FILTER_CATEGORY,
+  FILTER_SEARCH,
+  FILTERED_CAT_BOOL,
   SET_LOADING,
-  SET_CURRENT_NOTE,
-  NOTES_ERROR,
   SET_EDIT_MODAL,
   SET_ADD_MODAL,
+  SET_DEL_ALERT,
+  SET_CURRENT_NOTE,
+  SET_SEARCH_VALUE,
+  SET_ID,
   CLEAR_FILTER_CATEGORY,
+  CLEAR_SEARCH,
+  NOTES_ERROR,
 } from './types';
 
 export const getNotes = () => async dispatch => {
+  dispatch({ type: SET_LOADING });
   try {
-    setLoading();
-    const res = await fetch('http://localhost:5000/notes');
+    const res = await fetch('/notes');
     const data = await res.json();
+
     dispatch({
       type: GET_NOTES,
       payload: data,
     });
-  } catch (err) {
-    dispatch({ type: NOTES_ERROR, payload: err.response.statusText });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
   }
 };
 
 export const addNote = note => async dispatch => {
   try {
-    setLoading();
-
     //Get all notes and add new note, then dispatch action with to reducer to add note to state
     const res = await fetch('/notes', {
       method: 'POST',
@@ -38,13 +44,14 @@ export const addNote = note => async dispatch => {
       },
     });
     const data = await res.json();
+
     dispatch({
       type: ADD_NOTE,
       payload: data,
     });
     console.log(data);
-  } catch (err) {
-    dispatch({ type: NOTES_ERROR, payload: err.response.statusText });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
   }
 };
 
@@ -56,34 +63,71 @@ export const editNote = (note, id) => async dispatch => {
       'Content-Type': 'application/json',
     },
   });
-  const data = await res.json();
 
+  const data = await res.json();
+  dispatch({
+    type: EDIT_NOTE,
+    payload: data,
+  });
+};
+
+export const deleteNote = id => async dispatch => {
   try {
-    setLoading();
-    dispatch({
-      type: EDIT_NOTE,
-      payload: data,
+    await fetch(`/notes/${id}`, {
+      method: 'DELETE',
     });
-  } catch (err) {
-    dispatch({ type: NOTES_ERROR, payload: err.response.statusText });
+    dispatch({ type: DELETE_NOTE, payload: id });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
   }
 };
 
 export const filteredCategory = category => async dispatch => {
+  dispatch({ type: SET_LOADING });
   try {
-    dispatch({ type: FILTER_CATEGORY, payload: category });
-  } catch (err) {
-    dispatch({ type: NOTES_ERROR, payload: err.response.statusText });
+    //fetch notes with specific category using query strings
+    const res = await fetch(`/notes?category=${category}`);
+    const data = await res.json();
+    dispatch({ type: FILTER_CATEGORY, payload: data });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
   }
 };
 
-export const clearFilteredCategory = () => dispatch => {
-  try {
-    dispatch({ type: CLEAR_FILTER_CATEGORY });
-  } catch (err) {
-    dispatch({ type: NOTES_ERROR, payload: err.response.statusText });
+export const filteredSearch = text => async dispatch => {
+  dispatch({ type: SET_LOADING });
+  console.log(text, 'action');
+  //fetch notes that match search text using query strings
+  if (text === '') {
+    dispatch({ type: CLEAR_SEARCH, payload: '' });
+  } else {
+    const res = await fetch(`/notes?q=${text}`);
+    console.log(res, 'action');
+    const data = await res.json();
+    try {
+      dispatch({ type: FILTER_SEARCH, payload: data });
+    } catch (e) {
+      dispatch({ type: NOTES_ERROR, payload: e });
+    }
   }
 };
+
+export const filteredCatBool = bool => dispatch => {
+  try {
+    dispatch({ type: FILTERED_CAT_BOOL, payload: bool });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
+  }
+};
+
+export const setEditModal = () => dispatch =>
+  dispatch({ type: SET_EDIT_MODAL, payload: true });
+
+export const setAddModal = () => dispatch =>
+  dispatch({ type: SET_ADD_MODAL, payload: true });
+
+export const setDelAlert = bool => dispatch =>
+  dispatch({ type: SET_DEL_ALERT, payload: bool });
 
 export const setCurrentNote = note => dispatch => {
   dispatch({
@@ -92,11 +136,28 @@ export const setCurrentNote = note => dispatch => {
   });
 };
 
-export const setAddModal = () => dispatch =>
-  dispatch({ type: SET_ADD_MODAL, payload: true });
+export const setSearchValue = text => dispatch => {
+  dispatch({
+    type: SET_SEARCH_VALUE,
+    payload: text,
+  });
+};
 
-export const setEditModal = () => dispatch =>
-  dispatch({ type: SET_EDIT_MODAL, payload: true });
+export const setId = id => dispatch => {
+  dispatch({ type: SET_ID, payload: id });
+};
+
+export const clearFilteredCategory = () => dispatch => {
+  try {
+    dispatch({ type: CLEAR_FILTER_CATEGORY });
+  } catch (e) {
+    dispatch({ type: NOTES_ERROR, payload: e });
+  }
+};
+
+export const clearSearch = () => dispatch => {
+  dispatch({ type: CLEAR_SEARCH, payload: '' });
+};
 
 export const handleAddModalClose = () => dispatch => {
   dispatch({ type: SET_ADD_MODAL, payload: false });
@@ -106,6 +167,24 @@ export const handleEditModalClose = () => dispatch => {
   dispatch({ type: SET_EDIT_MODAL, payload: false });
 };
 
-export const setLoading = () => dispatch => {
-  dispatch({ type: SET_LOADING });
+export const newDate = () => {
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const month = monthNames[new Date().getMonth()];
+  const day = new Date().getDate();
+  const year = new Date().getFullYear();
+  return month + ' ' + day + ', ' + year;
 };

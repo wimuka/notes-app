@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-
-import { editNote, handleEditModalClose } from '../../actions/notesActions';
-import EditButton from '../layout/EditButton';
+import {
+  editNote,
+  handleEditModalClose,
+  newDate,
+} from '../../actions/notesActions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -16,7 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Modal from '@material-ui/core/Modal';
 
-const EditNoteModal = ({ note }) => {
+const EditNoteModal = () => {
   const dispatch = useDispatch();
 
   const editModalStatus = useSelector(state => state.notes.setEditModal);
@@ -26,6 +27,8 @@ const EditNoteModal = ({ note }) => {
   const [title, setTitle] = useState('');
   const [notesBody, setNotesBody] = useState('');
   const [category, setCategory] = useState('');
+  const [bodyError, setBodyError] = useState(false);
+  const [catError, setCatError] = useState(false);
 
   useEffect(() => {
     if (currentNote) {
@@ -36,17 +39,22 @@ const EditNoteModal = ({ note }) => {
   }, [currentNote]);
 
   const onSubmit = () => {
-    if ((title === '' || notesBody === '') && category === '') {
-      console.log('type in note');
+    if (notesBody === '' && category === '') {
+      setBodyError(true);
+      setCatError(true);
+    } else if (category === '') {
+      setCatError(true);
+      setBodyError(false);
+    } else if (notesBody === '') {
+      setBodyError(true);
+      setCatError(false);
     } else {
       const updateNote = {
-        id: currentNote.id,
         title,
         notesBody,
         category,
-        date: `Edited: ${new Date()}`,
+        date: `Edited: ${newDate()}`,
       };
-      console.log('Update note inside AddNoteModal', updateNote);
 
       dispatch(editNote(updateNote, currentNoteId));
       dispatch(handleEditModalClose());
@@ -54,9 +62,10 @@ const EditNoteModal = ({ note }) => {
       setTitle('');
       setNotesBody('');
       setCategory('');
+      setBodyError(false);
+      setCatError(false);
     }
   };
-
   const useStyles = makeStyles(theme => ({
     root: {
       display: 'flex',
@@ -66,12 +75,15 @@ const EditNoteModal = ({ note }) => {
         marginTop: '10rem',
       },
       height: '23rem',
+      '& .MuiFormLabel-root ': {
+        marginLeft: theme.spacing(1),
+      },
     },
 
     ModalTextField: {
       backgroundColor: '#f5f5f5',
       width: '96%',
-      paddingLeft: '1rem',
+      paddingLeft: '0.5rem',
       marginTop: '0.5rem',
       borderRadius: '0.3rem',
       height: '10rem',
@@ -80,7 +92,9 @@ const EditNoteModal = ({ note }) => {
 
     ModalInputBase: {
       backgroundColor: '#f5f5f5',
-      paddingLeft: '1rem',
+      '& .MuiInputBase-input': {
+        marginLeft: theme.spacing(1),
+      },
       width: '100%',
       marginTop: '0.5rem',
       borderRadius: '0.3rem',
@@ -91,19 +105,16 @@ const EditNoteModal = ({ note }) => {
       padding: '1rem',
     },
 
-    SubmitButton: {
-      marginTop: '1.5rem',
-    },
-
     CategoryLabel: {
       marginTop: '1rem',
-      paddingLeft: '1rem',
     },
     CatetogySelect: {
       width: '12rem',
       marginTop: '0.5rem',
+      paddingLeft: '0.3rem',
     },
   }));
+
   const classes = useStyles();
 
   const body = (
@@ -117,11 +128,13 @@ const EditNoteModal = ({ note }) => {
             name='message'
             onChange={e => setTitle(e.target.value)}
             value={title}
+            inputProps={{ maxLength: 18 }}
           />
           <TextField
+            error={bodyError ? true : false}
             multiline
             className={classes.ModalTextField}
-            placeholder='Type Note...'
+            label='Type Note...'
             type='text'
             InputProps={{ disableUnderline: true }}
             onChange={e => setNotesBody(e.target.value)}
@@ -129,6 +142,7 @@ const EditNoteModal = ({ note }) => {
           />
           <Grid>
             <InputLabel
+              error={catError ? true : false}
               className={classes.CategoryLabel}
               htmlFor='category-select'
             >
@@ -148,7 +162,6 @@ const EditNoteModal = ({ note }) => {
             </Select>
           </Grid>
           <Button
-            href='#text-buttons'
             color='primary'
             className={classes.SubmitButton}
             onClick={() => onSubmit()}
@@ -156,10 +169,15 @@ const EditNoteModal = ({ note }) => {
             EDIT
           </Button>
           <Button
-            href='#text-buttons'
             color='secondary'
             className={classes.SubmitButton}
-            onClick={() => dispatch(handleEditModalClose())}
+            onClick={() => {
+              dispatch(
+                handleEditModalClose(),
+                setBodyError(false),
+                setCatError(false)
+              );
+            }}
           >
             CANCEL
           </Button>
@@ -174,8 +192,7 @@ const EditNoteModal = ({ note }) => {
         open={editModalStatus}
         onClose={() => handleEditModalClose()}
         aria-describedby='modal-title'
-        aria-labelledby='modal-body'
-        aria-labelledby='modal-category'
+        aria-labelledby={('modal-edit-body', 'modal-edit-category')}
       >
         {body}
       </Modal>

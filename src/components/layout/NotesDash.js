@@ -1,91 +1,100 @@
 import React, { useEffect } from 'react';
-import interact from 'interactjs';
-import { useDispatch } from 'react-redux';
-import EditNoteModal from '../notes/EditNoteModal';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Notes from '../notes/Notes';
+import { getNotes } from '../../actions/notesActions';
+
+import Loading from './Loading';
+import addNote from '../../img/addNote.svg';
+import NoNotes from '../layout/NoNotes';
+import EditNoteModal from '../notes/EditNoteModal';
+import SortableNotes from '../notes/SortableNotes';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
     justifyContent: 'center',
     marginTop: '2rem',
+    display: 'flex',
   },
   gridHeight: {
-    height: '45rem',
+    minHeight: '25rem',
+    height: '50%',
     borderRadius: '0.3rem',
     backgroundColor: '#ffff',
-    display: 'flex',
-    flexWrap: 'wrap',
-    overflowY: 'auto',
 
-    alignContent: 'flex-start',
-    [theme.breakpoints.down('lg')]: {
-      height: '45rem',
+    [theme.breakpoints.up('xs')]: {
+      paddingLeft: '0.6rem',
     },
-    [theme.breakpoints.down('md')]: {
-      height: '28rem',
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: '1.4rem',
     },
-
-    [theme.breakpoints.down('xs')]: {
-      height: '19rem',
-    },
+  },
+  noNotesDiv: {
+    width: 'auto',
+    color: '#757575 ',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  noNotesImg: {
+    width: '20rem',
+    paddingBottom: '5rem',
   },
 }));
 
-const dragMoveListener = event => {
-  const target = event.target;
-  // keep the dragged position in the data-x/data-y attributes
-  const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-  const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+const NotesDash = ({ note }) => {
+  const allNotes = useSelector(state => state.notes.allnotes);
+  const filteredCategory = useSelector(state => state.notes.filteredCategory);
+  const filteredSearch = useSelector(state => state.notes.filteredSearch);
+  const searchText = useSelector(state => state.notes.searchText);
+  const filteredCatBool = useSelector(state => state.notes.filteredCatBool);
+  const loading = useSelector(state => state.notes.loading);
 
-  // translate the element
-  target.style.webkitTransform = target.style.transform =
-    'translate(' + x + 'px, ' + y + 'px)';
-
-  // update the posiion attributes
-  target.setAttribute('data-x', x);
-  target.setAttribute('data-y', y);
-};
-
-window.dragMoveListener = dragMoveListener;
-
-interact('.draggable').draggable({
-  listeners: {
-    // call this function on every dragmove event
-    move: dragMoveListener,
-  },
-  edges: { top: true, left: true },
-  inertia: true,
-  modifiers: [
-    interact.modifiers.restrictRect({
-      restriction: 'parent',
-    }),
-
-    interact.modifiers.snap({
-      targets: [interact.snappers.grid({ x: 15, y: 15 })],
-      offset: { x: 15, y: 5 },
-      range: Infinity,
-      relativePoints: [{ x: 0, y: 0 }],
-    }),
-  ],
-});
-
-const NotesDash = () => {
   const classes = useStyles();
   const { root, gridHeight } = classes;
+  const dispatch = useDispatch();
 
-  return (
-    <div className={root}>
-      <Grid item md={6} sm={8} xs={11} className={gridHeight}>
-        <Notes />
-        <EditNoteModal />
+  useEffect(() => {
+    dispatch(getNotes());
+    //eslint-disable-next-line
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  } else {
+    return (
+      <Grid container className={root}>
+        <Grid item md={6} sm={8} xs={11} className={gridHeight}>
+          {filteredSearch.length === 0 && searchText.length > 0 ? (
+            <NoNotes />
+          ) : filteredCategory.length === 0 && filteredCatBool ? (
+            <NoNotes />
+          ) : filteredSearch.length > 0 ? (
+            <SortableNotes
+              filteredCategory={filteredCategory}
+              allNotes={allNotes}
+            />
+          ) : allNotes.length === 0 ? (
+            <div className={classes.noNotesDiv}>
+              <h2>You don't have any notes</h2>
+              <img
+                className={classes.noNotesImg}
+                src={addNote}
+                alt='Add Notes'
+              />
+            </div>
+          ) : allNotes.length > 0 || filteredCategory.length > 0 ? (
+            <SortableNotes
+              filteredCategory={filteredCategory}
+              allNotes={allNotes}
+            />
+          ) : null}
+          <EditNoteModal note={note} />
+        </Grid>
       </Grid>
-    </div>
-  );
+    );
+  }
 };
 
 export default NotesDash;

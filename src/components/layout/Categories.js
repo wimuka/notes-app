@@ -1,31 +1,37 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  filteredCategory,
+  clearFilteredCategory,
+  filteredCatBool,
+  clearSearch,
+} from '../../actions/notesActions';
+
+import AddNoteModal from '../notes/AddNoteModal';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { styled } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
-
-import {
-  filteredCategory,
-  clearFilteredCategory,
-} from '../../actions/notesActions';
-import AddNoteModal from '../notes/AddNoteModal';
 
 const useStyles = makeStyles(theme => ({
-  root: { display: 'flex', justifyContent: 'center', marginTop: '1rem' },
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '1rem',
+  },
 
   addNoteBtn: {
     justifyContent: 'end',
   },
 
   btnsAlignment: {
-    display: 'flex',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('xs')]: {
+
+    [theme.breakpoints.up('sm')]: {
       justifyContent: 'center',
+      display: 'flex',
     },
   },
 }));
@@ -47,7 +53,7 @@ const HomeButton = styled(Button)(({ theme }) => ({
   },
   color: '#757575',
   '&:hover': {
-    backgroundColor: '#42a5f4',
+    backgroundColor: '#ffbf00',
     color: '#fff',
   },
 }));
@@ -60,7 +66,7 @@ const PersonalButton = styled(Button)(({ theme }) => ({
     marginLeft: '0.1rem',
   },
   '&:hover': {
-    backgroundColor: '#689f38',
+    backgroundColor: '#46ac31',
     color: '#fff',
   },
 }));
@@ -73,30 +79,35 @@ const WorkButton = styled(Button)(({ theme }) => ({
   },
   color: '#757575',
   '&:hover': {
-    backgroundColor: '#ffa000',
+    backgroundColor: '#42a5f4',
     color: '#fff',
   },
 }));
 
-const Categories = ({ text }) => {
+const Categories = () => {
   const dispatch = useDispatch();
-  const classes = useStyles();
+  const searchText = useSelector(state => state.notes.searchText);
   const [btnCategory, setBtnCategory] = useState('');
+  const classes = useStyles();
   const { root, addNoteBtn, btnsAlignment } = classes;
 
   const onBtnClick = category => {
     dispatch(filteredCategory(category));
     setBtnCategory(category);
+    if (searchText !== '') {
+      dispatch(clearSearch());
+    } else return null;
   };
 
   return (
-    <div className={root}>
+    <Grid className={root}>
       <Grid item md={6} sm={8} xs={11} className={btnsAlignment}>
         <Grid container alignItems='center'>
           <Grid>
             <AllButton
               onClick={() => {
                 dispatch(clearFilteredCategory());
+                dispatch(filteredCatBool(false));
                 onBtnClick('');
               }}
               style={
@@ -111,11 +122,14 @@ const Categories = ({ text }) => {
               ALL
             </AllButton>
             <HomeButton
-              onClick={() => onBtnClick('home')}
+              onClick={() => {
+                onBtnClick('home');
+                dispatch(filteredCatBool(true));
+              }}
               style={
                 btnCategory === 'home'
                   ? {
-                      backgroundColor: '#42a5f4',
+                      backgroundColor: '#ffbf00',
                       color: '#fff',
                     }
                   : null
@@ -124,11 +138,14 @@ const Categories = ({ text }) => {
               HOME
             </HomeButton>
             <WorkButton
-              onClick={() => onBtnClick('work')}
+              onClick={() => {
+                onBtnClick('work');
+                dispatch(filteredCatBool(true));
+              }}
               style={
                 btnCategory === 'work'
                   ? {
-                      backgroundColor: '#ffa000',
+                      backgroundColor: '#42a5f4',
                       color: '#fff',
                     }
                   : null
@@ -137,11 +154,14 @@ const Categories = ({ text }) => {
               WORK
             </WorkButton>
             <PersonalButton
-              onClick={() => onBtnClick('personal')}
+              onClick={() => {
+                onBtnClick('personal');
+                dispatch(filteredCatBool(true));
+              }}
               style={
                 btnCategory === 'personal'
                   ? {
-                      backgroundColor: '#689f38',
+                      backgroundColor: '#46ac31',
                       color: '#fff',
                     }
                   : null
@@ -151,15 +171,14 @@ const Categories = ({ text }) => {
             </PersonalButton>
           </Grid>
         </Grid>
-        {/* <Hidden only='xs'> */}
+
         <Grid className={addNoteBtn}>
           <Grid>
             <AddNoteModal />
           </Grid>
         </Grid>
-        {/* </Hidden> */}
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

@@ -1,13 +1,19 @@
 export const GET_NOTES = 'GET_NOTES';
 export const ADD_NOTE = 'ADD_NOTE';
-export const DELETE_NOTE = 'DELETE_NOTE';
 export const EDIT_NOTE = 'EDIT_NOTE';
-export const SEARCH_NOTES = 'SEARCH_NOTES';
+export const DELETE_NOTE = 'DELETE_NOTE';
 export const FILTER_CATEGORY = 'FILTER_CATEGORY';
-
-export const SET_CURRENT_NOTE = 'SET_CURRENT_NOTE';
-export const SET_ADD_MODAL = 'SET_ADD_MODAL';
-export const SET_EDIT_MODAL = 'SET_EDIT_MODAL';
-export const NOTES_ERROR = 'NOTES_ERROR';
+export const FILTERED_CAT_BOOL = 'FILTERED_CAT_BOOL';
+export const FILTER_SEARCH = 'FILTER_SEARCH';
 export const SET_LOADING = 'SET_LOADING';
+export const SET_EDIT_MODAL = 'SET_EDIT_MODAL';
+export const SET_ADD_MODAL = 'SET_ADD_MODAL';
+export const SET_DEL_ALERT = ' SET_DEL_ALERT';
+export const SET_CURRENT_NOTE = 'SET_CURRENT_NOTE';
+export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE';
+export const SET_ID = 'SET_ID';
 export const CLEAR_FILTER_CATEGORY = 'CLEAR_FILTER_CATEGORY';
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+export const REORDER_CATEGORY_NOTES = 'REORDER_CATEGORY_NOTES';
+export const REORDER_ALL_NOTES = 'REORDER_ALL_NOTES';
+export const NOTES_ERROR = 'NOTES_ERROR';

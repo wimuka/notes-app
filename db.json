@@ -1,65 +1,53 @@
 {
   "notes": [
     {
-      "id": 1,
-      "title": "Movies To Watch",
-      "notesBody": "Ravenant, Once Upon A Time In Hollywood",
-      "date": "December 26, 2020"
-    },
-    {
-      "id": 2,
-      "title": "Books to read",
-      "notesBody": "Harry Potter, Fantasy, Cook Book",
-      "date": "February 12, 2021"
-    },
-    {
       "title": "Chores to do",
-      "notesBody": "Vacuum\nDo dishes\nClean Miso's litter",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters",
       "category": "home",
-      "date": "2021-02-25T00:20:51.244Z",
+      "date": "Edited: Mar 13, 2021",
       "id": 3
     },
     {
-      "title": "fff",
-      "notesBody": "fff",
+      "title": "Work related",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
       "category": "work",
-      "date": "2021-02-25T17:16:43.328Z",
+      "date": "Edited: Mar 13, 2021",
       "id": 4
     },
     {
-      "id": 5,
-      "title": "Cat",
-      "notesBody": "Cat",
-      "category": "personal",
-      "date": "Edited: Mon Mar 01 2021 11:04:55 GMT-0500 (Eastern Standard Time)"
-    },
-    {
-      "id": 6,
-      "title": "Grant",
-      "notesBody": "The cat!",
+      "title": "Cooking",
+      "notesBody": "Make pizza for dinner + meal plan for upcoming week",
       "category": "home",
-      "date": "Edited: Sun Feb 28 2021 16:04:04 GMT-0500 (Eastern Standard Time)"
+      "date": "Edited: Mar 14, 2021",
+      "id": 10
     },
     {
-      "id": 7,
-      "title": "Lalala",
-      "notesBody": "",
-      "category": "personal",
-      "date": "Edited: Sun Feb 28 2021 13:38:49 GMT-0500 (Eastern Standard Time)"
-    },
-    {
-      "id": 8,
-      "title": "dddd",
-      "notesBody": "dddd",
+      "title": "Home stuff",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ",
       "category": "home",
-      "date": "Edited: Sun Feb 28 2021 16:05:16 GMT-0500 (Eastern Standard Time)"
+      "date": "Edited: Mar 13, 2021",
+      "id": 12
     },
     {
-      "id": 9,
-      "title": "Feee",
-      "notesBody": "Gggg",
+      "title": "Study Related",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. ",
       "category": "personal",
-      "date": "Edited: Sun Feb 28 2021 16:32:08 GMT-0500 (Eastern Standard Time)"
+      "date": "Edited: Mar 14, 2021",
+      "id": 13
+    },
+    {
+      "title": "Books to read",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. NO #",
+      "category": "personal",
+      "date": "Edited: Mar 14, 2021",
+      "id": 14
+    },
+    {
+      "title": "Create new resume",
+      "notesBody": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution",
+      "category": "personal",
+      "date": "Edited: Mar 13, 2021",
+      "id": 15
     }
   ]
 }
