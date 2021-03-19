@@ -95,14 +95,12 @@ export const filteredCategory = category => async dispatch => {
 };
 
 export const filteredSearch = text => async dispatch => {
-  dispatch({ type: SET_LOADING });
-  console.log(text, 'action');
+  // dispatch({ type: SET_LOADING })
   //fetch notes that match search text using query strings
   if (text === '') {
     dispatch({ type: CLEAR_SEARCH, payload: '' });
   } else {
     const res = await fetch(`/notes?q=${text}`);
-    console.log(res, 'action');
     const data = await res.json();
     try {
       dispatch({ type: FILTER_SEARCH, payload: data });

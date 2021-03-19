@@ -23,7 +23,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
     "json-server": "json-server --watch db.json --port 5000",
     "dev": "concurrently \"npm start\" \"npm run json-server\"",
     "build": "react-scripts build",
@@ -48,6 +48,5 @@
   "devDependencies": {
     "json-server": "^0.16.3",
     "concurrently": "^6.0.0"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }
