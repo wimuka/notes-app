@@ -17,8 +17,8 @@ app.use(function (req, res, next) {
 
 const data = require('./db.json');
 
-app.use('api', middlewares, router);
-app.get('api', function (req, res, next) {
+app.use('/api', middlewares, router);
+app.get('/api/notes', function (req, res, next) {
   res.send(data);
 });
 if (process.env.NODE_ENV === 'production') {
