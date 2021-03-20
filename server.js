@@ -15,7 +15,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/', middlewares, router);
+app.use('/notes', middlewares, router);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
