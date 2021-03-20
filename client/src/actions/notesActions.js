@@ -21,7 +21,7 @@ import {
 export const getNotes = () => async dispatch => {
   dispatch({ type: SET_LOADING });
   try {
-    const res = await fetch('/notes');
+    const res = await fetch('api/notes');
     const data = await res.json();
     console.log(data);
     dispatch({
