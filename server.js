@@ -15,9 +15,14 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/', middlewares, router);
-app.use(express.static('client/build'));
-app.get('*', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/client/build/index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')); // relative path
+  });
+}
+
+// app.use('/', middlewares, router);
+
 app.listen(port, () => console.log(`Server started on port ${port}`));
