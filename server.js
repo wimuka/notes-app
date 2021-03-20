@@ -15,8 +15,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/notes', middlewares, router);
+const data = require('./db.json');
 
+app.use('/notes', middlewares, router);
+app.get('/notes', function (req, res, next) {
+  res.send(data);
+});
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 
