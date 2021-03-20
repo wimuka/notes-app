@@ -36,7 +36,7 @@ export const getNotes = () => async dispatch => {
 export const addNote = note => async dispatch => {
   try {
     //Get all notes and add new note, then dispatch action with to reducer to add note to state
-    const res = await fetch('/notes', {
+    const res = await fetch('api/notes', {
       method: 'POST',
       body: JSON.stringify(note),
       headers: {
@@ -56,7 +56,7 @@ export const addNote = note => async dispatch => {
 };
 
 export const editNote = (note, id) => async dispatch => {
-  const res = await fetch(`/notes/${id}`, {
+  const res = await fetch(`api/notes/${id}`, {
     method: 'PUT',
     body: JSON.stringify(note),
     headers: {
@@ -73,7 +73,7 @@ export const editNote = (note, id) => async dispatch => {
 
 export const deleteNote = id => async dispatch => {
   try {
-    await fetch(`/notes/${id}`, {
+    await fetch(`api/notes/${id}`, {
       method: 'DELETE',
     });
     dispatch({ type: DELETE_NOTE, payload: id });
@@ -86,7 +86,7 @@ export const filteredCategory = category => async dispatch => {
   dispatch({ type: SET_LOADING });
   try {
     //fetch notes with specific category using query strings
-    const res = await fetch(`/notes?category=${category}`);
+    const res = await fetch(`api/notes?category=${category}`);
     const data = await res.json();
     dispatch({ type: FILTER_CATEGORY, payload: data });
   } catch (e) {
@@ -100,7 +100,7 @@ export const filteredSearch = text => async dispatch => {
   if (text === '') {
     dispatch({ type: CLEAR_SEARCH, payload: '' });
   } else {
-    const res = await fetch(`/notes?q=${text}`);
+    const res = await fetch(`api/notes?q=${text}`);
     const data = await res.json();
     try {
       dispatch({ type: FILTER_SEARCH, payload: data });
