@@ -50,7 +50,6 @@ const SearchBar = () => {
             placeholder='Search notes...'
             type='text'
             value={text}
-            aria-label='search notes'
             aria-labelledby='search notes'
             onChange={e => {
               onSearchChange(e);
