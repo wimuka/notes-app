@@ -41,7 +41,7 @@ const AllButton = styled(Button)({
   color: '#fff',
   '&:hover': {
     backgroundColor: 'transparent',
-    color: '#757575',
+    color: '#424242',
   },
 });
 
@@ -51,7 +51,7 @@ const HomeButton = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     marginLeft: '0.1rem',
   },
-  color: '#757575',
+  color: '#424242',
   '&:hover': {
     backgroundColor: '#ffbf00',
     color: '#fff',
@@ -60,7 +60,7 @@ const HomeButton = styled(Button)(({ theme }) => ({
 
 const PersonalButton = styled(Button)(({ theme }) => ({
   backgroundColor: 'none',
-  color: '#757575',
+  color: '#424242',
   marginLeft: '0.5rem',
   [theme.breakpoints.down('sm')]: {
     marginLeft: '0.1rem',
@@ -77,7 +77,7 @@ const WorkButton = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     marginLeft: '0.1rem',
   },
-  color: '#757575',
+  color: '#424242',
   '&:hover': {
     backgroundColor: '#42a5f4',
     color: '#fff',
@@ -116,7 +116,7 @@ const Categories = () => {
                       backgroundColor: '#5c6bc0',
                       color: '#fff',
                     }
-                  : { backgroundColor: 'transparent', color: '#757575' }
+                  : { backgroundColor: 'transparent', color: '#424242' }
               }
             >
               ALL

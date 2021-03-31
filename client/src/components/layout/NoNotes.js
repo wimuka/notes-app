@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   noNotesDiv: {
     width: 'auto',
-    color: '#757575 ',
+    color: '#424242',
   },
   noNotesImg: {
     width: '20rem',

@@ -92,6 +92,7 @@ const NoteItem = ({ noteBody, title, note, index, id, date }) => {
           </Grid>
           <Grid>
             <IconButton
+              aria-label='edit note'
               className={classes.button}
               disableRipple
               color='primary'
@@ -100,6 +101,7 @@ const NoteItem = ({ noteBody, title, note, index, id, date }) => {
               <EditIcon />
             </IconButton>
             <IconButton
+              aria-label='delete note'
               disableRipple
               color='primary'
               onClick={() => handleClick()}

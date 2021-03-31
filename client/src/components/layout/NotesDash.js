@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   noNotesDiv: {
     width: 'auto',
-    color: '#757575 ',
+    color: '#424242',
     marginLeft: 'auto',
     marginRight: 'auto',
   },

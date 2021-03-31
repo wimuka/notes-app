@@ -43,13 +43,14 @@ const SearchBar = () => {
     <div className={classes.divCenter}>
       <Grid item md={6} sm={8} xs={11}>
         <Paper component='form' className={classes.root} elevation={3}>
-          <Button disabled>
+          <Button disabled aria-label='search icon'>
             <SearchIcon className={classes.searchIconColor} />
           </Button>
           <InputBase
             placeholder='Search notes...'
             type='text'
             value={text}
+            label='search notes'
             onChange={e => {
               onSearchChange(e);
             }}
